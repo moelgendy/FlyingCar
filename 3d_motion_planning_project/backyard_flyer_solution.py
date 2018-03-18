@@ -1,8 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Solution to the Backyard Flyer Project.
-"""
-
 import time
 from enum import Enum
 

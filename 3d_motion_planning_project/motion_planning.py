@@ -4,6 +4,7 @@ import msgpack
 from enum import Enum, auto
 
 import numpy as np
+import csv
 
 from planning_utils import a_star, heuristic, create_grid
 from udacidrone import Drone
@@ -35,11 +36,15 @@ class MotionPlanning(Drone):
         # initial state
         self.flight_state = States.MANUAL
 
-        # register all your callbacks here
+        # register all your callbacks coming from the autopilot
         self.register_callback(MsgID.LOCAL_POSITION, self.local_position_callback)
         self.register_callback(MsgID.LOCAL_VELOCITY, self.velocity_callback)
         self.register_callback(MsgID.STATE, self.state_callback)
 
+    # in this callback function, the program checks if the flight_state is takeoff or waypoint
+    # if TAKEOFF, keep checking until the altitude reaches 95% of the goal altitude. Then go to the next waypoint
+    # if WAYPOINT, keep checking until the drone reaches the target point. Then check if there are anymore points
+    # in the waypoint. If yes, then go to the next waypoint. If not, land.
     def local_position_callback(self):
         if self.flight_state == States.TAKEOFF:
             if -1.0 * self.local_position[2] > 0.95 * self.target_position[2]:
@@ -120,25 +125,33 @@ class MotionPlanning(Drone):
         self.target_position[2] = TARGET_ALTITUDE
 
         # TODO: read lat0, lon0 from colliders into floating point values
-        
+        with open('colliders.csv', 'r') as f:
+            header_line = f.readline()
+            lat_str, lon_str = header_line.split(',')
+            lat0 = float(lat_str.strip().split(' ')[1])
+            lon0 = float(lon_str.strip().split(' ')[1])
+            print("Map home location: ({}, {})".format(lat0, lon0))
         # TODO: set home position to (lat0, lon0, 0)
-
+        # set_home_position method is in Udacidrone here: https://github.com/udacity/udacidrone/blob/master/udacidrone/drone.py#L411
+        home_position = (lon0, lat0, 0)
+        self.set_home_position(*home_position)
         # TODO: retrieve current global position
- 
+        global_position = self.global_position
         # TODO: convert to current local position using global_to_local()
-        
+        local_position = global_to_local(global_position, home_position)
         print('global home {0}, position {1}, local position {2}'.format(self.global_home, self.global_position,
                                                                          self.local_position))
+        print("===============================")
         # Read in obstacle map
-        data = np.loadtxt('colliders.csv', delimiter=',', dtype='Float64', skiprows=3)
-        
+        data = np.loadtxt('colliders.csv', delimiter=',', dtype='Float64', skiprows=2)
+
         # Define a grid for a particular altitude and safety margin around obstacles
         grid, north_offset, east_offset = create_grid(data, TARGET_ALTITUDE, SAFETY_DISTANCE)
         print("North offset = {0}, east offset = {1}".format(north_offset, east_offset))
         # Define starting point on the grid (this is just grid center)
         grid_start = (-north_offset, -east_offset)
         # TODO: convert start position to current position rather than map center
-        
+
         # Set goal as some arbitrary position on the grid
         grid_goal = (-north_offset + 10, -east_offset + 10)
         # TODO: adapt to set goal as latitude / longitude position and convert
@@ -148,7 +161,7 @@ class MotionPlanning(Drone):
         # or move to a different search space such as a graph (not done here)
         print('Local Start and Goal: ', grid_start, grid_goal)
         path, _ = a_star(grid, heuristic, grid_start, grid_goal)
-        
+
         # TODO: prune path to minimize number of waypoints
         # TODO (if you're feeling ambitious): Try a different approach altogether!
 
