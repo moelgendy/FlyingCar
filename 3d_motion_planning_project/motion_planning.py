@@ -6,7 +6,7 @@ from enum import Enum, auto
 import numpy as np
 import csv
 
-from planning_utils import a_star, heuristic, create_grid
+from planning_utils import a_star, heuristic, create_grid, prune_path
 from udacidrone import Drone
 from udacidrone.connection import MavlinkConnection
 from udacidrone.messaging import MsgID
@@ -133,36 +133,51 @@ class MotionPlanning(Drone):
             print("Map home location: ({}, {})".format(lat0, lon0))
         # TODO: set home position to (lat0, lon0, 0)
         # set_home_position method is in Udacidrone here: https://github.com/udacity/udacidrone/blob/master/udacidrone/drone.py#L411
-        home_position = (lon0, lat0, 0)
-        self.set_home_position(*home_position)
+        self.set_home_position(lon0, lat0, 0)
+
         # TODO: retrieve current global position
-        global_position = self.global_position
+        # the global position is the current GPS position of the drone
         # TODO: convert to current local position using global_to_local()
-        local_position = global_to_local(global_position, home_position)
-        print('global home {0}, position {1}, local position {2}'.format(self.global_home, self.global_position,
-                                                                         self.local_position))
+        # Local position is the current NED position of the drone
+        current_local_pos = global_to_local(self.global_position, self.global_home)
+
+        # local_position = global_to_local(global_position, home_position)
+        print('global home {0}, position {1}, local position {2}'.format(self.global_home, self.global_position, self.local_position))
         print("===============================")
+
         # Read in obstacle map
         data = np.loadtxt('colliders.csv', delimiter=',', dtype='Float64', skiprows=2)
 
         # Define a grid for a particular altitude and safety margin around obstacles
         grid, north_offset, east_offset = create_grid(data, TARGET_ALTITUDE, SAFETY_DISTANCE)
         print("North offset = {0}, east offset = {1}".format(north_offset, east_offset))
+
         # Define starting point on the grid (this is just grid center)
-        grid_start = (-north_offset, -east_offset)
+        grid_start = (int(current_local_pos[0]-north_offset),
+                      int(current_local_pos[1]-east_offset))
         # TODO: convert start position to current position rather than map center
 
         # Set goal as some arbitrary position on the grid
-        grid_goal = (-north_offset + 10, -east_offset + 10)
+        # grid_goal = (-north_offset + 10, -east_offset + 10)
         # TODO: adapt to set goal as latitude / longitude position and convert
+        drum_california = global_to_local([-122.396478, 37.793969, 0], self.global_home)
+        # front_st = global_to_local([-122.398925, 37.792702, 0.], self.global_home)
+
+        goal = drum_california
+        grid_goal = (int(-north_offset+goal[0]), int(-east_offset+goal[1]))
+        print("========>> grid_goal =", grid_goal)
 
         # Run A* to find a path from start to goal
+
         # TODO: add diagonal motions with a cost of sqrt(2) to your A* implementation
         # or move to a different search space such as a graph (not done here)
         print('Local Start and Goal: ', grid_start, grid_goal)
+        print('Finding path. Please be patient ...')
+        print('.....')
         path, _ = a_star(grid, heuristic, grid_start, grid_goal)
 
         # TODO: prune path to minimize number of waypoints
+        path = prune_path(path, epsilon=1e-6)
         # TODO (if you're feeling ambitious): Try a different approach altogether!
 
         # Convert path to waypoints
