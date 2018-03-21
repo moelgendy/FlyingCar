@@ -161,7 +161,7 @@ class MotionPlanning(Drone):
         # grid_goal = (-north_offset + 10, -east_offset + 10)
         # TODO: adapt to set goal as latitude / longitude position and convert
         drum_california = global_to_local([-122.396478, 37.793969, 0], self.global_home)
-        # front_st = global_to_local([-122.398925, 37.792702, 0.], self.global_home)
+        front_st = global_to_local([-122.398925, 37.792702, 0.], self.global_home)
 
         goal = drum_california
         grid_goal = (int(-north_offset+goal[0]), int(-east_offset+goal[1]))
@@ -177,7 +177,7 @@ class MotionPlanning(Drone):
         path, _ = a_star(grid, heuristic, grid_start, grid_goal)
 
         # TODO: prune path to minimize number of waypoints
-        path = prune_path(path, epsilon=1e-6)
+        path = prune_path(path)
         # TODO (if you're feeling ambitious): Try a different approach altogether!
 
         # Convert path to waypoints
