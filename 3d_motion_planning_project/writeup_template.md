@@ -51,12 +51,6 @@ Here's | A | Snappy | Table
 
 #### 1. Set the global home position
 - Read the first line of the csv file, extract lat0 and lon0 as floating point values
-
- `    with open('colliders.csv', 'r') as f:
-            header_line = f.readline()
-            lat_str, lon_str = header_line.split(',')
-            lat0 = float(lat_str.strip().split(' ')[1])
-            lon0 = float(lon_str.strip().split(' ')[1])`
 - Used the self.set_home_position() method from UdacidroneAPI to set global home
     - `self.set_home_position(lon0, lat0, 0)`
 
@@ -64,15 +58,14 @@ Here's | A | Snappy | Table
 And here is a lovely picture of our downtown San Francisco environment from above!
 ![Map of SF](./misc/map.png)
 
-#### 2. Set your current local position
-Here as long as you successfully determine your local position relative to global home you'll be all set. Explain briefly how you accomplished this in your code.
-
-
-Meanwhile, here's a picture of me flying through the trees!
-![Forest Flying](./misc/in_the_trees.png)
+#### 2. Set current local position
+- Converted to current local position using `global_to_local()`
+    - `current_local_pos = global_to_local(self.global_position, self.global_home)`
 
 #### 3. Set grid start position from local position
-This is another step in adding flexibility to the start location. As long as it works you're good to go!
+In here, we want to add flexibility to the start location so that the drone treats the current location at the code start as the start location. This avoids the drone from having to move all the way to the center of the map every time we run the code.
+
+` grid_start = (int(current_local_pos[0]-north_offset), int(current_local_pos[1]-east_offset))`
 
 #### 4. Set grid goal position from geodetic coords
 This step is to add flexibility to the desired goal location. Should be able to choose any (lat, lon) within the map and have it rendered to a goal location on the grid.

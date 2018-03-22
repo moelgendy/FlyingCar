@@ -45,8 +45,8 @@
             <entry file="file://$PROJECT_DIR$/writeup_template.md">
               <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
                 <state split_layout="SPLIT">
-                  <first_editor relative-caret-position="540">
-                    <caret line="58" column="18" lean-forward="false" selection-start-line="55" selection-start-column="12" selection-end-line="58" selection-end-column="18" />
+                  <first_editor relative-caret-position="477">
+                    <caret line="67" column="0" lean-forward="false" selection-start-line="67" selection-start-column="0" selection-end-line="67" selection-end-column="0" />
                     <folding />
                   </first_editor>
                   <second_editor />
@@ -61,8 +61,8 @@
           <file leaf-file-name="motion_planning.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/motion_planning.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="113">
-                  <caret line="127" column="2" lean-forward="true" selection-start-line="127" selection-start-column="2" selection-end-line="131" selection-end-column="55" />
+                <state relative-caret-position="278">
+                  <caret line="154" column="0" lean-forward="false" selection-start-line="154" selection-start-column="0" selection-end-line="156" selection-end-column="60" />
                   <folding>
                     <element signature="e#0#15#0" expanded="true" />
                   </folding>
@@ -467,8 +467,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/motion_planning.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="113">
-          <caret line="127" column="2" lean-forward="true" selection-start-line="127" selection-start-column="2" selection-end-line="131" selection-end-column="55" />
+        <state relative-caret-position="278">
+          <caret line="154" column="0" lean-forward="false" selection-start-line="154" selection-start-column="0" selection-end-line="156" selection-end-column="60" />
           <folding>
             <element signature="e#0#15#0" expanded="true" />
           </folding>
@@ -478,8 +478,8 @@
     <entry file="file://$PROJECT_DIR$/writeup_template.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="540">
-            <caret line="58" column="18" lean-forward="false" selection-start-line="55" selection-start-column="12" selection-end-line="58" selection-end-column="18" />
+          <first_editor relative-caret-position="477">
+            <caret line="67" column="0" lean-forward="false" selection-start-line="67" selection-start-column="0" selection-end-line="67" selection-end-column="0" />
             <folding />
           </first_editor>
           <second_editor />
