@@ -20,7 +20,7 @@
 ---
 ### Writeup / README
 
-#### 1. Provide a Writeup / README that includes all the rubric points and how you addressed each one.  You can submit your writeup as markdown or pdf.  
+#### This is a Writeup / README that includes how I addressed this planning project.  You can submit your writeup as markdown or pdf.
 
 You're reading it! Below I describe how I addressed each rubric point and where in my code each point is handled.
 
