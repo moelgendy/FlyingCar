@@ -40,18 +40,11 @@ These scripts contain a basic planning implementation that includes:
 And here's an awesome image of the drone excuting on the developed plan to California St and Drum St intersection: 
 ![Top Down View](./misc/california_drum_st.png)
 
-Here's | A | Snappy | Table
---- | --- | --- | ---
-1 | `highlight` | **bold** | 7.41
-2 | a | b | c
-3 | *italic* | text | 403
-4 | 2 | 3 | abcd
-
 ### How I implemented the Path Planning Algorithm
 
 #### 1. Set the global home position
 - Read the first line of the csv file, extract lat0 and lon0 as floating point values
-- Used the self.set_home_position() method from UdacidroneAPI to set global home
+- Used the self.set_home_position() method from [UdacidroneAPI](https://github.com/udacity/udacidrone/tree/master/udacidrone) to set global home
     - `self.set_home_position(lon0, lat0, 0)`
 
 
@@ -68,24 +61,30 @@ In here, we want to add flexibility to the start location so that the drone trea
 ` grid_start = (int(current_local_pos[0]-north_offset), int(current_local_pos[1]-east_offset))`
 
 #### 4. Set grid goal position from geodetic coords
-This step is to add flexibility to the desired goal location. Should be able to choose any (lat, lon) within the map and have it rendered to a goal location on the grid.
+Now, we need to add flexibility to the desired goal location as well. Users should be able to choose any (lat, lon) from the map (or simulator) within the map and have it rendered to a goal location on the grid.
+
+For example, I chose the intersection of California st and Drum st to be my goal. Here is how the code would look like: 
+
+`drum_california = global_to_local([-122.396478, 37.793969, 0], self.global_home)`
+
+To get your own goal coordinates, run the simulator and manually move the drone to any point on the map. Then copy the lon and lat from the blue box on the top left of the screen. There you go. Now you have a dynamic start and end goal for your plan. Great job!
 
 #### 5. Modify A* to include diagonal motion (or replace A* altogether)
-Minimal requirement here is to modify the code in planning_utils() to update the A* implementation to include diagonal motions on the grid that have a cost of sqrt(2), but more creative solutions are welcome. Explain the code you used to accomplish this step.
+Now that you have a start and end points, a plan and a set of actions. You can improve on the defined actions by adding diagonal motions in the A* implementation in `planning_utils()` with a cost of sqrt(2).
+
+Here is how to do that:
+- first, you need to add the diagonal directions in `Class Action(Enum)` with cost `np.sqrt(2)`
+- Then, define the diagonal actions in `valid_actions()`
+- Finally, update the A* method to get the new vertexes connected to the current vertex
 
 #### 6. Cull waypoints 
-For this step you can use a collinearity test or ray tracing method like Bresenham. The idea is simply to prune your path of unnecessary waypoints. Explain the code you used to accomplish this step.
+- For the last step, you need to do some pruning to your path to minimize the waypoints defined in the plan 
+- The way I did that is by using `collinearity` test to find all the points that lie on the same line (i.e triangle area = 0) 
+- Finally, I created `prun_plan()` method to remove all points on the same line to provide a smooth ride for the drone and prune the path of unnecessary waypoints
+
 
 
 
 ### Execute the flight
 #### 1. Does it work?
-It works!
-
-### Double check that you've met specifications for each of the [rubric](https://review.udacity.com/#!/rubrics/1534/view) points.
-  
-# Extra Challenges: Real World Planning
-
-For an extra challenge, consider implementing some of the techniques described in the "Real World Planning" lesson. You could try implementing a vehicle model to take dynamic constraints into account, or implement a replanning method to invoke if you get off course or encounter unexpected obstacles.
-
-
+## YAAY! It works!
