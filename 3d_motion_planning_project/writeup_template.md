@@ -14,23 +14,31 @@
 7. Write it up.
 8. Congratulations!  Your Done!
 
-## [Rubric](https://review.udacity.com/#!/rubrics/1534/view) Points
-### Here I will consider the rubric points individually and describe how I addressed each point in my implementation.  
+## What's implemented:
+### Here I will explain what this project does and how I implemented it.   
 
 ---
 ### Writeup / README
 
-#### This is a Writeup / README that includes how I addressed this planning project.  You can submit your writeup as markdown or pdf.
+#### This is a Writeup / README that includes how I addressed this planning project:
 
-You're reading it! Below I describe how I addressed each rubric point and where in my code each point is handled.
 
-### Explain the Starter Code
+### The Starter Code
 
-#### 1. Explain the functionality of what's provided in `motion_planning.py` and `planning_utils.py`
-These scripts contain a basic planning implementation that includes...
-
-And here's a lovely image of my results (ok this image has nothing to do with it, but it's a nice example of how to include images in your writeup!)
-![Top Down View](./misc/high_up.png)
+#### 1.  Functionality in `motion_planning.py` and `planning_utils.py`:
+These scripts contain a basic planning implementation that includes:
+ - The drone States Class which inherits from python's Enum class and are set to auto( )
+ - The MotionPlanning Class which inherits from the Drone class in Udacidrone API. All the drone implementation lie in this class
+ - Within the MotionPlanning you will find the following:
+    - The register callbacks
+    - Methods to define the drone's local_position, velocity, state, all transition states and the plan_path method
+ - The `plan_path()` is the main method here that reads the obstacle points from `colliders.csv' and sets the home position of the drone
+ - It also creates the grid by calling the `create_grid` method in `planning_utils.py`
+ - After creating the grid, we call the `a_star()` method to search for the most optimal path to the goal
+ - Finally we `prune_path()` and send the waypoints to the drone to execute
+ 
+And here's an awesome image of the drone excuting on the developed plan to California St and Drum St intersection: 
+![Top Down View](./misc/california_drum_st.png)
 
 Here's | A | Snappy | Table
 --- | --- | --- | ---
