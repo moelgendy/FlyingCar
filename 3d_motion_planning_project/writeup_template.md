@@ -47,10 +47,18 @@ Here's | A | Snappy | Table
 3 | *italic* | text | 403
 4 | 2 | 3 | abcd
 
-### Implementing Your Path Planning Algorithm
+### How I implemented the Path Planning Algorithm
 
-#### 1. Set your global home position
-Here students should read the first line of the csv file, extract lat0 and lon0 as floating point values and use the self.set_home_position() method to set global home. Explain briefly how you accomplished this in your code.
+#### 1. Set the global home position
+- Read the first line of the csv file, extract lat0 and lon0 as floating point values
+
+ `    with open('colliders.csv', 'r') as f:
+            header_line = f.readline()
+            lat_str, lon_str = header_line.split(',')
+            lat0 = float(lat_str.strip().split(' ')[1])
+            lon0 = float(lon_str.strip().split(' ')[1])`
+- Used the self.set_home_position() method from UdacidroneAPI to set global home
+    - `self.set_home_position(lon0, lat0, 0)`
 
 
 And here is a lovely picture of our downtown San Francisco environment from above!
