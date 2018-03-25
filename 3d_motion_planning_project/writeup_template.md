@@ -70,7 +70,7 @@ For example, I chose the intersection of California st and Drum st to be my goal
 To get your own goal coordinates, run the simulator and manually move the drone to any point on the map. Then copy the lon and lat from the blue box on the top left of the screen. There you go. Now you have a dynamic start and end goal for your plan. Great job!
 
 #### 5. Modify A* to include diagonal motion (or replace A* altogether)
-Now that you have a start and end points, a plan and a set of actions. You can improve on the defined actions by adding diagonal motions in the A* implementation in `planning_utils()` with a cost of sqrt(2).
+Now that you have a start and end points, a plan, and a set of actions. You can improve on the defined actions by adding diagonal motions in the A* implementation in `planning_utils()` with a cost of sqrt(2).
 
 Here is how to do that:
 - first, you need to add the diagonal directions in `Class Action(Enum)` with cost `np.sqrt(2)`
