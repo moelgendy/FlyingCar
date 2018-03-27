@@ -4,7 +4,7 @@
 ---
 
 
-# Required Steps for a Passing Submission:
+# Here is how I implemented the 3D route planning for my drone "Albert":
 1. Load the 2.5D map in the colliders.csv file describing the environment.
 2. Discretize the environment into a grid or graph representation.
 3. Define the start and goal locations.
