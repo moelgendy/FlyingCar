@@ -143,7 +143,7 @@ PASS: ABS(Quad.Omega.X) was less than 2.500000 for at least 0.750000 seconds
 ```
 
 <p align="center">
-<img src="animations/scenario2_sol.png" width="500"/>
+<img src="animations/scenario2_sol.gif" width="500"/>
 </p>
 
 
