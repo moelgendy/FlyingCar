@@ -128,6 +128,16 @@ You may find it helpful to consult the [Python controller code](https://github.c
 
 3. **Parameter Ratios**: In this [one-page document](https://www.overleaf.com/read/bgrkghpggnyc#/61023787/) you can find a derivation of the ratio of velocity proportional gain to position proportional gain for a critically damped double integrator system. The ratio of `kpV / kpP` should be 4.
 
+### Intro (scenario 1) ###
+
+- Adjusted the `Mass` parameter to 0.5. The vehicle was able to stay in the same spot as shown below:
+```
+PASS: ABS(Quad.PosFollowErr) was less than 0.500000 for at least 0.800000 seconds
+```
+<p align="center">
+<img src="animations/scenario_1_sol.gif" width="500"/>
+</p>
+
 ### Body rate and roll/pitch control (scenario 2) ###
 
 - Implemented `GenerateMotorCommands()`, `BodyRateControl()`, and `RollPitchControl()`.
