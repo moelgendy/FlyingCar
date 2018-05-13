@@ -132,9 +132,12 @@ You may find it helpful to consult the [Python controller code](https://github.c
 
 - Implemented `GenerateMotorCommands()`, `BodyRateControl()`, and `RollPitchControl()`.
 - Tuned `kpPQR` and `KpBank`
-- **result**:
+- **Result**:
+
 Simulation #12 (../config/2_AttitudeControl.txt)
+
 `PASS: ABS(Quad.Roll) was less than 0.025000 for at least 0.750000 seconds`
+
 `PASS: ABS(Quad.Omega.X) was less than 2.500000 for at least 0.750000 seconds`
 
 <p align="center">
