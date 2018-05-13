@@ -69,11 +69,19 @@ VehicleCommand QuadControl::GenerateMotorCommands(float collThrustCmd, V3F momen
   // You'll need the arm length parameter L, and the drag/thrust ratio kappa
 
   ////////////////////////////// BEGIN STUDENT CODE ///////////////////////////
+    float l = L/sqrtf(2.f);
+    float txl = momentCmd.x / l;
+    float tyl = momentCmd.y / l;
+    float tzk = momentCmd.z / -kappa;
 
-  cmd.desiredThrustsN[0] = mass * 9.81f / 4.f; // front left
-  cmd.desiredThrustsN[1] = mass * 9.81f / 4.f; // front right
-  cmd.desiredThrustsN[2] = mass * 9.81f / 4.f; // rear left
-  cmd.desiredThrustsN[3] = mass * 9.81f / 4.f; // rear right
+    cmd.desiredThrustsN[0] = (collThrustCmd + txl + tyl + tzk) / 4.f; // front left
+    cmd.desiredThrustsN[1] = (collThrustCmd - txl + tyl - tzk) / 4.f; // front right
+    cmd.desiredThrustsN[2] = (collThrustCmd + txl - tyl - tzk) / 4.f; // rear left
+    cmd.desiredThrustsN[3] = (collThrustCmd - txl - tyl + tzk) / 4.f; // rear right
+//  cmd.desiredThrustsN[0] = mass * 9.81f / 4.f; // front left
+//  cmd.desiredThrustsN[1] = mass * 9.81f / 4.f; // front right
+//  cmd.desiredThrustsN[2] = mass * 9.81f / 4.f; // rear left
+//  cmd.desiredThrustsN[3] = mass * 9.81f / 4.f; // rear right
 
   /////////////////////////////// END STUDENT CODE ////////////////////////////
 
@@ -97,8 +105,10 @@ V3F QuadControl::BodyRateControl(V3F pqrCmd, V3F pqr)
   V3F momentCmd;
 
   ////////////////////////////// BEGIN STUDENT CODE ///////////////////////////
-
-  
+    V3F err = pqrCmd - pqr;
+    momentCmd[0] = kpPQR[0] * err[0] * Ixx;
+    momentCmd[1] = kpPQR[1] * err[1] * Iyy;
+    momentCmd[2] = kpPQR[2] * err[2] * Izz;
 
   /////////////////////////////// END STUDENT CODE ////////////////////////////
 
@@ -128,7 +138,19 @@ V3F QuadControl::RollPitchControl(V3F accelCmd, Quaternion<float> attitude, floa
   Mat3x3F R = attitude.RotationMatrix_IwrtB();
 
   ////////////////////////////// BEGIN STUDENT CODE ///////////////////////////
-
+    float c_d = collThrustCmd / mass;
+    
+    if (collThrustCmd > 0.0) {
+        float target_R13 = -CONSTRAIN(accelCmd.x / c_d, -maxTiltAngle, maxTiltAngle);
+        float target_R23 = -CONSTRAIN(accelCmd.y / c_d, -maxTiltAngle, maxTiltAngle);
+        
+        pqrCmd.x = (1 / R(2, 2)) *
+        (-R(1, 0) * kpBank * (R(0, 2) - target_R13) +
+         R(0, 0) * kpBank * (R(1, 2) - target_R23));
+        pqrCmd.y = (1 / R(2, 2)) *
+        (-R(1, 1) * kpBank * (R(0, 2) - target_R13) +
+         R(0, 1) * kpBank * (R(1, 2) - target_R23));
+    }
 
 
   /////////////////////////////// END STUDENT CODE ////////////////////////////
