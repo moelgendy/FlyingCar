@@ -159,19 +159,14 @@ PASS: ABS(Quad.Omega.X) was less than 2.500000 for at least 0.750000 seconds
 
 ### Position/velocity and yaw angle control (scenario 3) ###
 
-Next, you will implement the position, altitude and yaw control for your quad.  For the simulation, you will use `Scenario 3`.  This will create 2 identical quads, one offset from its target point (but initialized with yaw = 0) and second offset from target point but yaw = 45 degrees.
+Implemented the position, altitude and yaw controls:
 
- - implement the code in the function `LateralPositionControl()`
- - implement the code in the function `AltitudeControl()`
- - tune parameters `kpPosZ` and `kpPosZ`
- - tune parameters `kpVelXY` and `kpVelZ`
-
-If successful, the quads should be going to their destination points and tracking error should be going down (as shown below). However, one quad remains rotated in yaw.
-
- - implement the code in the function `YawControl()`
- - tune parameters `kpYaw` and the 3rd (z) component of `kpPQR`
-
-Tune position control for settling time. Don’t try to tune yaw control too tightly, as yaw control requires a lot of control authority from a quadcopter and can really affect other degrees of freedom.  This is why you often see quadcopters with tilted motors, better yaw authority!
+ - Implemented the code in the function `LateralPositionControl()`
+ - Implemented the code in the function `AltitudeControl()`
+ - Tuned parameters `kpPosZ` and `kpPosZ`
+ - Tuned parameters `kpVelXY` and `kpVelZ`
+ - Implemented the code in the function `YawControl()`
+ - Tuned parameters `kpYaw` and the 3rd (z) component of `kpPQR`
 
 <p align="center">
 <img src="animations/scenario3.gif" width="500"/>
@@ -227,37 +222,3 @@ With the two different trajectories, your drones' motions should look like this:
 For flying a trajectory, is there a way to provide even more information for even better tracking?
 
 How about trying to fly this trajectory as quickly as possible (but within following threshold)!
-
-
-## Evaluation ##
-
-To assist with tuning of your controller, the simulator contains real time performance evaluation.  We have defined a set of performance metrics for each of the scenarios that your controllers must meet for a successful submission.
-
-There are two ways to view the output of the evaluation:
-
- - in the command line, at the end of each simulation loop, a **PASS** or a **FAIL** for each metric being evaluated in that simulation
- - on the plots, once your quad meets the metrics, you will see a green box appear on the plot notifying you of a **PASS**
-
-
-### Performance Metrics ###
-
-The specific performance metrics are as follows:
-
- - scenario 2
-   - roll should less than 0.025 radian of nominal for 0.75 seconds (3/4 of the duration of the loop)
-   - roll rate should less than 2.5 radian/sec for 0.75 seconds
-
- - scenario 3
-   - X position of both drones should be within 0.1 meters of the target for at least 1.25 seconds
-   - Quad2 yaw should be within 0.1 of the target for at least 1 second
-
-
- - scenario 4
-   - position error for all 3 quads should be less than 0.1 meters for at least 1.5 seconds
-
- - scenario 5
-   - position error of the quad should be less than 0.25 meters for at least 3 seconds
-
-## Authors ##
-
-Thanks to Fotokite for the initial development of the project code and simulator.
