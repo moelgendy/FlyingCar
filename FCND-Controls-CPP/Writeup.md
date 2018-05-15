@@ -192,8 +192,14 @@ In this part, we will explore some of the non-idealities and robustness of a con
 
 3. Tune the integral control, and other control parameters until all the quads successfully move properly.  Your drones' motion should look like this:
 
+```
+Simulation #15 (../config/4_Nonidealities.txt)
+PASS: ABS(Quad1.PosFollowErr) was less than 0.100000 for at least 1.500000 seconds
+PASS: ABS(Quad2.PosFollowErr) was less than 0.100000 for at least 1.500000 seconds
+PASS: ABS(Quad3.PosFollowErr) was less than 0.100000 for at least 1.500000 seconds
+```
 <p align="center">
-<img src="animations/scenario4.gif" width="500"/>
+<img src="animations/scenario_4_sol.gif" width="500"/>
 </p>
 
 
@@ -217,8 +223,13 @@ Did the velocity-specified trajectory make a difference? Why?
 
 With the two different trajectories, your drones' motions should look like this:
 
+```
+Simulation #290 (../config/5_TrajectoryFollow.txt)
+PASS: ABS(Quad2.PosFollowErr) was less than 0.250000 for at least 3.000000 seconds
+```
+
 <p align="center">
-<img src="animations/scenario5.gif" width="500"/>
+<img src="animations/scenario_5_sol.gif" width="500"/>
 </p>
 
 

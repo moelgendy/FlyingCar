@@ -190,19 +190,20 @@ float QuadControl::AltitudeControl(float posZCmd, float velZCmd, float posZ, flo
   ////////////////////////////// BEGIN STUDENT CODE ///////////////////////////
   
 
-//    float z_err = posZCmd - posZ;
-//    float z_err_dot = velZCmd - velZ;
-//
-//    float p_term = kpPosZ * z_err;
-//    float d_term = kpVelZ * z_err_dot;
+    float z_err = posZCmd - posZ;
+    float z_err_dot = velZCmd - velZ;
+
+    float p_term = kpPosZ * z_err;
+    float d_term = kpVelZ * z_err_dot;
+    float i_term = KiPosZ * integratedAltitudeError;
     
 // python: c = (u_1_bar - self.g) / b_z
-//    float u_1_bar = p_term + d_term + accelZCmd;
-//
-//    float b_z = R(2,2);
-//    float c = (u_1_bar - CONST_GRAVITY) / b_z;
-//
-//    thrust = -mass * CONSTRAIN(c, -maxDescentRate/dt, maxAscentRate/dt);
+    float u_1_bar = p_term + d_term + i_term + accelZCmd;
+
+    float b_z = R(2,2);
+    float c = (u_1_bar - CONST_GRAVITY) / b_z;
+
+    thrust = -mass * CONSTRAIN(c, -maxDescentRate/dt, maxAscentRate/dt);
   /////////////////////////////// END STUDENT CODE ////////////////////////////
   
   return thrust;
