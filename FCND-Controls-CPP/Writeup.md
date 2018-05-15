@@ -190,10 +190,10 @@ In this part, we will explore some of the non-idealities and robustness of a con
 
 1. Edited `AltitudeControl()` to add basic integral control to help with the different-mass vehicle.
 
-3. Tune the integral control, and other control parameters until all the quads successfully move properly.  Your drones' motion should look like this:
+2. Tuned the integral control, and other control parameters until all the quads successfully move properly.
 
 ```
-Simulation #15 (../config/4_Nonidealities.txt)
+Simulation #195 (../config/4_Nonidealities.txt)
 PASS: ABS(Quad1.PosFollowErr) was less than 0.100000 for at least 1.500000 seconds
 PASS: ABS(Quad2.PosFollowErr) was less than 0.100000 for at least 1.500000 seconds
 PASS: ABS(Quad3.PosFollowErr) was less than 0.100000 for at least 1.500000 seconds

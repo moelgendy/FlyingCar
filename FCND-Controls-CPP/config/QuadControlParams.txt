@@ -23,7 +23,7 @@ kpPosXY = 30
 # 1
 kpPosZ = 40
 # 1
-KiPosZ = 20
+KiPosZ = 10
 #20
 
 # Velocity control gains
