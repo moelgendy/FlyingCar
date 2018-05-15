@@ -188,7 +188,7 @@ In this part, we will explore some of the non-idealities and robustness of a con
 
 1. Run your controller & parameter set from Step 3.  Do all the quads seem to be moving OK?  If not, try to tweak the controller parameters to work for all 3 (tip: relax the controller).
 
-2. Edit `AltitudeControl()` to add basic integral control to help with the different-mass vehicle.
+1. Edited `AltitudeControl()` to add basic integral control to help with the different-mass vehicle.
 
 3. Tune the integral control, and other control parameters until all the quads successfully move properly.  Your drones' motion should look like this:
 
