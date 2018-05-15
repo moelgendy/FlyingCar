@@ -7,7 +7,7 @@
 #include "Trajectory.h"
 #include "BaseController.h"
 #include "Math/Mat3x3F.h"
-
+#include <iostream>
 #ifdef __PX4_NUTTX
 #include <systemlib/param/param.h>
 #endif
@@ -69,19 +69,25 @@ VehicleCommand QuadControl::GenerateMotorCommands(float collThrustCmd, V3F momen
   // You'll need the arm length parameter L, and the drag/thrust ratio kappa
 
   ////////////////////////////// BEGIN STUDENT CODE ///////////////////////////
-//    float l = L/sqrtf(2.f);
-//    float txl = momentCmd.x / l;
-//    float tyl = momentCmd.y / l;
-//    float tzk = momentCmd.z / -kappa;
-//
-//    cmd.desiredThrustsN[0] = (collThrustCmd + txl + tyl + tzk) / 4.f; // front left
-//    cmd.desiredThrustsN[1] = (collThrustCmd - txl + tyl - tzk) / 4.f; // front right
-//    cmd.desiredThrustsN[2] = (collThrustCmd + txl - tyl - tzk) / 4.f; // rear left
-//    cmd.desiredThrustsN[3] = (collThrustCmd - txl - tyl + tzk) / 4.f; // rear right
-  cmd.desiredThrustsN[0] = mass * 9.81f / 4.f; // front left
-  cmd.desiredThrustsN[1] = mass * 9.81f / 4.f; // front right
-  cmd.desiredThrustsN[2] = mass * 9.81f / 4.f; // rear left
-  cmd.desiredThrustsN[3] = mass * 9.81f / 4.f; // rear right
+    float l = L/sqrtf(2.f);
+    float txl = momentCmd.x / l;
+    float tyl = momentCmd.y / l;
+    float tzk = momentCmd.z / -kappa;
+    
+//    Python code
+//    omega_4 = (c_bar + p_bar - r_bar - q_bar)/4
+//    omega_3 = (r_bar - p_bar)/2 + omega_4
+//    omega_2 = (c_bar - p_bar)/2 - omega_3
+//    omega_1 = c_bar - omega_2 - omega_3 - omega_4
+    
+    cmd.desiredThrustsN[0] = (collThrustCmd + txl + tyl + tzk) / 4.f; // front left
+    cmd.desiredThrustsN[1] = (collThrustCmd - txl + tyl - tzk) / 4.f; // front right
+    cmd.desiredThrustsN[2] = (collThrustCmd + txl - tyl - tzk) / 4.f; // rear left
+    cmd.desiredThrustsN[3] = (collThrustCmd - txl - tyl + tzk) / 4.f; // rear right
+//  cmd.desiredThrustsN[0] = mass * 9.81f / 4.f; // front left
+//  cmd.desiredThrustsN[1] = mass * 9.81f / 4.f; // front right
+//  cmd.desiredThrustsN[2] = mass * 9.81f / 4.f; // rear left
+//  cmd.desiredThrustsN[3] = mass * 9.81f / 4.f; // rear right
 
   /////////////////////////////// END STUDENT CODE ////////////////////////////
 
@@ -182,9 +188,21 @@ float QuadControl::AltitudeControl(float posZCmd, float velZCmd, float posZ, flo
   float thrust = 0;
 
   ////////////////////////////// BEGIN STUDENT CODE ///////////////////////////
+  
 
-
-
+//    float z_err = posZCmd - posZ;
+//    float z_err_dot = velZCmd - velZ;
+//
+//    float p_term = kpPosZ * z_err;
+//    float d_term = kpVelZ * z_err_dot;
+    
+// python: c = (u_1_bar - self.g) / b_z
+//    float u_1_bar = p_term + d_term + accelZCmd;
+//
+//    float b_z = R(2,2);
+//    float c = (u_1_bar - CONST_GRAVITY) / b_z;
+//
+//    thrust = -mass * CONSTRAIN(c, -maxDescentRate/dt, maxAscentRate/dt);
   /////////////////////////////// END STUDENT CODE ////////////////////////////
   
   return thrust;
@@ -220,8 +238,16 @@ V3F QuadControl::LateralPositionControl(V3F posCmd, V3F velCmd, V3F pos, V3F vel
   V3F accelCmd = accelCmdFF;
 
   ////////////////////////////// BEGIN STUDENT CODE ///////////////////////////
-
-  
+    V3F kpPos(kpPosXY, kpPosXY, 0.f);
+    V3F kpVel(kpVelXY, kpVelXY, 0.f);
+    V3F velocity_cmd = kpPos * (posCmd - pos);
+    
+    if (velocity_cmd.mag() > maxSpeedXY)
+        velocity_cmd = velocity_cmd * maxSpeedXY / velocity_cmd.norm();
+    
+    accelCmd = accelCmd +
+    kpPos * (posCmd - pos) +
+    kpVel * (velCmd - vel);
 
   /////////////////////////////// END STUDENT CODE ////////////////////////////
 
@@ -243,7 +269,15 @@ float QuadControl::YawControl(float yawCmd, float yaw)
 
   float yawRateCmd=0;
   ////////////////////////////// BEGIN STUDENT CODE ///////////////////////////
-
+    yawCmd = fmodf(yawCmd, 2.0 * F_PI);
+    float yaw_error = yawCmd - yaw;
+    
+    if (yaw_error > F_PI)
+        yaw_error = yaw_error - 2.0 * F_PI;
+    else if (yaw_error < -F_PI)
+        yaw_error = yaw_error + 2.0 * F_PI;
+    
+    yawRateCmd = kpYaw * yaw_error;
 
   /////////////////////////////// END STUDENT CODE ////////////////////////////
 

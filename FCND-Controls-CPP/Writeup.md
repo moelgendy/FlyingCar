@@ -163,13 +163,18 @@ Implemented the position, altitude and yaw controls:
 
  - Implemented the code in the function `LateralPositionControl()`
  - Implemented the code in the function `AltitudeControl()`
- - Tuned parameters `kpPosZ` and `kpPosZ`
- - Tuned parameters `kpVelXY` and `kpVelZ`
  - Implemented the code in the function `YawControl()`
+ - Tuned parameters `kpPosZ` and `kiPosZ`
+ - Tuned parameters `kpVelXY` and `kpVelZ`
  - Tuned parameters `kpYaw` and the 3rd (z) component of `kpPQR`
-
+```
+Simulation #340 (../config/3_PositionControl.txt)
+PASS: ABS(Quad1.Pos.X) was less than 0.100000 for at least 1.250000 seconds
+PASS: ABS(Quad2.Pos.X) was less than 0.100000 for at least 1.250000 seconds
+PASS: ABS(Quad2.Yaw) was less than 0.100000 for at least 1.000000 seconds
+```
 <p align="center">
-<img src="animations/scenario3.gif" width="500"/>
+<img src="animations/scenario_3_sol.gif" width="500"/>
 </p>
 
 **Hint:**  For a second order system, such as the one for this quadcopter, the velocity gain (`kpVelXY` and `kpVelZ`) should be at least ~3-4 times greater than the respective position gain (`kpPosXY` and `kpPosZ`).
