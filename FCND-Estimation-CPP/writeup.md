@@ -1,6 +1,6 @@
 # Estimation Project Writeup #
 
-### Step 1: Sensor Noise ###
+### Scenario 6: Sensor Noise ###
 
 #### Completed ####
 ```
@@ -12,7 +12,7 @@ PASS: ABS(Quad.IMU.AX-0.000000) was less than MeasuredStdDev_AccelXY for 69% of 
 ![sensor noise](images/scenario6.gif)
 
 
-### Step 2: Attitude Estimation ###
+### Scenario 7: Attitude Estimation ###
 
 #### Completed ####
 
@@ -21,3 +21,10 @@ Simulation #13 (../config/07_AttitudeEstimation.txt)
 PASS: ABS(Quad.Est.E.MaxEuler) was less than 0.100000 for at least 3.000000 seconds
 ```
 ![scenario7](images/scenario7.gif)
+
+
+### Scenario 8: Prediction Step ###
+
+#### Completed ####
+
+![scenario8](images/scenario8.gif)
